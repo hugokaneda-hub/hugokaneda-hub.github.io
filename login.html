@@ -255,15 +255,22 @@
     p.type = p.type === 'password' ? 'text' : 'password';
   }
 
-  function doLogin() {
-    const btn = document.getElementById('loginBtn');
-    btn.classList.add('loading');
-    setTimeout(() => {
-      localStorage.setItem('gc_logged', '1');
-      localStorage.setItem('gc_login_time', Date.now());
-      window.location.href = 'index.html';
-    }, 800);
-  }
+function doLogin() {
+  const btn = document.getElementById('loginBtn');
+  btn.classList.add('loading');
+
+  setTimeout(() => {
+    // Libera acesso na sessão
+    sessionStorage.setItem('entrouPeloLogin', 'true');
+
+    // (opcional) mantém compatibilidade com o que você já tinha
+    localStorage.setItem('gc_logged', '1');
+    localStorage.setItem('gc_login_time', Date.now());
+
+    // Redireciona pra plataforma
+    window.location.href = 'index.html';
+  }, 800);
+}
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') doLogin();
