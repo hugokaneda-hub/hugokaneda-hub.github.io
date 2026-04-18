@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acesso Liberado – Gavião Concurseiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c14;
+    --surface: #0d1420;
+    --surface2: #111827;
+    --border: rgba(255,255,255,0.07);
+    --blue: #2563eb;
+    --blue-light: #3b82f6;
+    --blue-glow: rgba(37,99,235,0.25);
+    --amber: #f59e0b;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --success: #10b981;
+    --orange: #f97316;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.5;
+  }
+
+  /* Glowing orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb1 { width: 400px; height: 400px; background: rgba(37,99,235,0.15); top: -100px; left: -100px; }
+  .orb2 { width: 300px; height: 300px; background: rgba(249,115,22,0.08); bottom: -50px; right: -50px; }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 40px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .logo-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 20px rgba(37,99,235,0.4);
+  }
+
+  .logo-text h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; }
+  .logo-text span { font-size: 0.8rem; color: var(--amber); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .card {
+    background: linear-gradient(135deg, rgba(13,20,32,0.9), rgba(17,24,39,0.9));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 32px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04);
+    animation: fadeUp 0.6s 0.15s ease both;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(16,185,129,0.12);
+    border: 1px solid rgba(16,185,129,0.25);
+    color: var(--success);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  .badge::before { content: '●'; font-size: 0.5rem; animation: pulse 1.5s infinite; }
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .credentials-box {
+    background: rgba(37,99,235,0.06);
+    border: 1px solid rgba(37,99,235,0.2);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 28px;
+    text-align: left;
+  }
+
+  .cred-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 14px;
+  }
+
+  .cred-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .cred-row:last-child { border-bottom: none; }
+  .cred-label { font-size: 0.8rem; color: var(--muted); }
+  .cred-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    background: rgba(255,255,255,0.05);
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: rgba(249,115,22,0.06);
+    border: 1px solid rgba(249,115,22,0.15);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 28px;
+    text-align: left;
+  }
+  .warning-icon { font-size: 0.9rem; flex-shrink: 0; margin-top: 1px; }
+  .warning p { font-size: 0.78rem; color: rgba(249,115,22,0.85); line-height: 1.5; }
+
+  .btn-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 15px 24px;
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 20px rgba(37,99,235,0.35);
+  }
+
+  .btn-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(37,99,235,0.5);
+  }
+  .btn-main:active { transform: scale(0.98); }
+
+  .btn-main svg { transition: transform 0.2s; }
+  .btn-main:hover svg { transform: translateX(4px); }
+
+  .footer-text {
+    margin-top: 24px;
+    font-size: 0.75rem;
+    color: rgba(148,163,184,0.5);
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="container">
+  <div class="logo-wrap">
+    <div class="logo-icon">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 3C10 3 5 7 5 12c0 3 1.5 5.5 4 7.5L7 26l5-2.5c1.3.3 2.6.5 4 .5s2.7-.2 4-.5L25 26l-2-6.5C25.5 17.5 27 15 27 12c0-5-5-9-11-9z" fill="rgba(255,255,255,0.15)"/>
+        <path d="M4 14l-2 6 4-1.5C7.5 20.5 11.5 22 16 22s8.5-1.5 10-3.5L30 20l-2-6" stroke="rgba(255,255,255,0.6)" stroke-width="1" fill="none"/>
+        <path d="M16 4L8 10l2 4 6-2 6 2 2-4L16 4z" fill="white" opacity="0.9"/>
+        <path d="M16 4l-2 8 2 2 2-2L16 4z" fill="rgba(37,99,235,0.8)"/>
+        <circle cx="16" cy="16" r="2" fill="white" opacity="0.6"/>
+        <!-- Eagle shape -->
+        <path d="M9 11l-5 2 3 1-3 3 5-1-1 3 4-3 4 3-1-3 5 1-3-3 3-1-5-2-2-3-2 3z" fill="white" opacity="0.85"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <h1>Gavião Concurseiro</h1>
+      <span>Plataforma de Estudos</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="badge">✓ Acesso Liberado com Sucesso</div>
+
+    <h2>Sua plataforma está pronta!</h2>
+    <p class="subtitle">Bem-vindo(a) à plataforma Gavião Concurseiro. Abaixo estão suas credenciais de acesso. Guarde-as em local seguro.</p>
+
+    <div class="credentials-box">
+      <div class="cred-title">🔐 Credenciais de Acesso</div>
+      <div class="cred-row">
+        <span class="cred-label">Usuário</span>
+        <span class="cred-value">aluno</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-label">Senha</span>
+        <span class="cred-value">aprovado2026</span>
+      </div>
+    </div>
+
+    <div class="warning">
+      <span class="warning-icon">⚠️</span>
+      <p>Este acesso é <strong>individual e intransferível</strong>. Não compartilhe suas credenciais. O uso indevido pode resultar no cancelamento do acesso.</p>
+    </div>
+
+    <a href="login.html" class="btn-main">
+      Acessar Plataforma
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+
+  <p class="footer-text">© 2026 Gavião Concurseiro · Todos os direitos reservados</p>
+</div>
+</body>
+</html>
