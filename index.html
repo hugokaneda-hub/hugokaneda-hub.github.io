@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <script>
-if (!sessionStorage.getItem("entrouPeloLogin")) {
-  window.location.href = "acesso.html";
-}
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gavião Concurseiro – Plataforma de Estudos</title>
@@ -479,6 +474,34 @@ body::after{
 .g10{background:linear-gradient(135deg,#3a1a1a,#200808);}
 .g11{background:linear-gradient(135deg,#1a1a3a,#08082a);}
 .g12{background:linear-gradient(135deg,#3a2a3a,#201820);}
+
+/* ===== MOTIVAÇÃO ===== */
+.motivation-block{
+  background:linear-gradient(135deg,rgba(249,115,22,0.08),rgba(249,115,22,0.03));
+  border:1px solid rgba(249,115,22,0.22);
+  border-radius:14px;padding:16px 20px;margin-bottom:20px;
+  display:flex;align-items:center;gap:14px;
+}
+.motivation-icon{
+  width:48px;height:48px;flex-shrink:0;
+  background:rgba(249,115,22,0.12);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+}
+.motivation-days{font-size:1rem;font-weight:800;color:#fb923c;margin-bottom:4px;}
+.motivation-msg{font-size:0.78rem;color:var(--muted);line-height:1.45;}
+
+/* ===== SUGESTÕES ===== */
+.feedback-wrap{display:flex;flex-direction:column;gap:18px;max-width:600px;}
+.feedback-intro{font-size:0.82rem;color:var(--muted);line-height:1.6;padding:14px 16px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;}
+.feedback-intro strong{color:var(--text2);}
+.feedback-field{display:flex;flex-direction:column;gap:7px;}
+.feedback-label{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+.feedback-input{width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:'Syne',sans-serif;font-size:0.88rem;outline:none;transition:border-color .2s,box-shadow .2s;}
+.feedback-input:focus{border-color:rgba(37,99,235,0.45);box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
+.feedback-input::placeholder{color:rgba(148,163,184,0.35);}
+.feedback-textarea{min-height:130px;resize:vertical;}
+.feedback-confirm{display:none;align-items:center;gap:10px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.22);border-radius:10px;padding:13px 16px;font-size:0.82rem;color:var(--success);font-weight:600;}
+.feedback-confirm.show{display:flex;}
 </style>
 </head>
 <body>
@@ -537,6 +560,10 @@ body::after{
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
         Materiais de Estudo
       </button>
+      <button class="nav-item" onclick="goto('materialextra')">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Material Personalizado
+      </button>
       <button class="nav-item" onclick="goto('videoaulas')">
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
         Video Aulas
@@ -558,6 +585,10 @@ body::after{
       <button class="nav-item" onclick="goto('anotacoes')">
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         Anotações
+      </button>
+      <button class="nav-item" onclick="goto('sugestoes')">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Sugestões
       </button>
     </nav>
 
@@ -601,6 +632,15 @@ body::after{
           <div class="stat-card">
             <div class="stat-value" id="statMateriais">0</div>
             <div class="stat-label">Materiais</div>
+          </div>
+        </div>
+
+        <!-- MOTIVAÇÃO -->
+        <div class="motivation-block">
+          <div class="motivation-icon" id="motivIcon">🔥</div>
+          <div>
+            <div class="motivation-days" id="motivDays">Carregando...</div>
+            <div class="motivation-msg" id="motivMsg">Calculando seus dias de estudo...</div>
           </div>
         </div>
 
@@ -733,6 +773,63 @@ Bons estudos, Gavião! 🦅"></textarea>
       </div>
     </section>
 
+
+    <!-- ===== MATERIAL PERSONALIZADO ===== -->
+    <section class="page" id="page-materialextra">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Material Personalizado</div>
+          <div class="page-subtitle">Seu material exclusivo de estudos</div>
+        </div>
+      </div>
+      <div class="page-body">
+        <div class="continue-card" style="display:block;">
+          <div class="continue-label">📁 MATERIAL DISPONÍVEL</div>
+          <div class="continue-title">Seu material personalizado está pronto</div>
+          <div class="continue-meta">Clique no botão abaixo para acessar o conteúdo exclusivo preparado para você.</div>
+          <a class="continue-btn" href="https://drive.google.com/" target="_blank" rel="noopener">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Acessar Material
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SUGESTÕES ===== -->
+    <section class="page" id="page-sugestoes">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Sugestões / Feedback</div>
+          <div class="page-subtitle">Sua opinião nos ajuda a melhorar a plataforma</div>
+        </div>
+      </div>
+      <div class="page-body">
+        <div class="feedback-wrap">
+          <div class="feedback-intro">
+            <strong>Como funciona?</strong> Preencha os campos e clique em "Enviar sugestão". Seu aplicativo de e-mail abrirá com a mensagem pronta — só confirmar o envio. Todas as sugestões são lidas com atenção. Obrigado! 🦅
+          </div>
+          <div class="feedback-field">
+            <div class="feedback-label">Seu e-mail (para resposta)</div>
+            <input class="feedback-input" type="email" id="fbEmail" placeholder="seuemail@exemplo.com">
+          </div>
+          <div class="feedback-field">
+            <div class="feedback-label">Sua sugestão ou feedback</div>
+            <textarea class="feedback-input feedback-textarea" id="fbMsg" placeholder="Escreva aqui sua sugestão, elogio, crítica ou dúvida..."></textarea>
+          </div>
+          <div>
+            <button class="btn btn-primary" onclick="enviarSugestao()" style="padding:12px 24px;">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Enviar sugestão
+            </button>
+          </div>
+          <div class="feedback-confirm" id="fbConfirm">
+            <span style="font-size:1.2rem;">✅</span>
+            Sugestão preparada! Finalize o envio no seu aplicativo de e-mail.
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 </div>
 
@@ -756,12 +853,12 @@ const MATERIAIS = [
 ];
 
 const VIDEOAULAS = [
-  { title:'Playlists – Direito Constitucional', meta:'Aulas completas em vídeo', badge:'Direito', emoji:'📜', bg:'g4', link:'https://www.dailymotion.com/user/ConcursoPublicoBrasil/playlists' },
-  { title:'Playlists – Direito Administrativo', meta:'Tópicos essenciais para concursos', badge:'Direito', emoji:'⚖️', bg:'g4', link:'https://www.dailymotion.com/user/ConcursoPublicoBrasil/playlists' },
-  { title:'Playlists – Língua Portuguesa', meta:'Gramática, redação e interpretação', badge:'Português', emoji:'📖', bg:'g6', link:'https://www.dailymotion.com/user/ConcursoPublicoBrasil/playlists' },
-  { title:'Playlists – Matemática e Raciocínio', meta:'Lógica e matemática aplicada', badge:'Exatas', emoji:'🔢', bg:'g10', link:'https://www.dailymotion.com/user/ConcursoPublicoBrasil/playlists' },
-  { title:'Playlists – Informática Básica', meta:'Fundamentos de TI para concursos', badge:'TI', emoji:'💻', bg:'g9', link:'https://www.dailymotion.com/user/ConcursoPublicoBrasil/playlists' },
-  { title:'Playlists – Atualidades e Notícias', meta:'Temas recentes e contemporâneos', badge:'Geral', emoji:'🌎', bg:'g8', link:'https://www.dailymotion.com/user/ConcursoPublicoBrasil/playlists' },
+  { title:'Playlists – Direito Constitucional', meta:'Aulas completas em vídeo', badge:'Direito', emoji:'📜', bg:'g4', link:'https://www.dailymotion.com/playlist/x72hso' },
+  { title:'Playlists – Direito Administrativo', meta:'Tópicos essenciais para concursos', badge:'Direito', emoji:'⚖️', bg:'g4', link:'https://www.dailymotion.com/playlist/x72hsp' },
+  { title:'Playlists – Língua Portuguesa', meta:'Gramática, redação e interpretação', badge:'Português', emoji:'📖', bg:'g6', link:'https://www.dailymotion.com/playlist/x72hsr' },
+  { title:'Playlists – Matemática e Raciocínio', meta:'Lógica e matemática aplicada', badge:'Exatas', emoji:'🔢', bg:'g10', link:'https://www.dailymotion.com/playlist/x72hss' },
+  { title:'Playlists – Informática Básica', meta:'Fundamentos de TI para concursos', badge:'TI', emoji:'💻', bg:'g9', link:'https://www.dailymotion.com/playlist/x72hst' },
+  { title:'Playlists – Atualidades e Notícias', meta:'Temas recentes e contemporâneos', badge:'Geral', emoji:'🌎', bg:'g8', link:'https://www.dailymotion.com/playlist/x72hsu' },
 ];
 
 const SIMULADOS = [
@@ -825,7 +922,9 @@ function goto(page) {
        (page==='simulados' && n.textContent.includes('Simulados')) ||
        (page==='cronograma' && n.textContent.includes('Cronograma')) ||
        (page==='pomodoro' && n.textContent.includes('Pomodoro')) ||
-       (page==='anotacoes' && n.textContent.includes('Anotações'))) {
+       (page==='anotacoes' && n.textContent.includes('Anotações')) ||
+       (page==='sugestoes' && n.textContent.includes('Sugestões')) ||
+       (page==='materialextra' && n.textContent.includes('Material Personalizado'))) {
       n.classList.add('active');
     }
   });
@@ -947,10 +1046,33 @@ function resetSchedule() {
   renderSchedule();
 }
 
+// ===== MOTIVAÇÃO =====
+function getDaysStudying() {
+  if (!localStorage.getItem('gc_start_date')) {
+    localStorage.setItem('gc_start_date', Date.now());
+  }
+  return Math.max(1, Math.floor((Date.now() - parseInt(localStorage.getItem('gc_start_date'))) / (1000*60*60*24)) + 1);
+}
+
+function updateMotivation() {
+  const days = getDaysStudying();
+  const msgs = [
+    { max:1,    icon:'🌱', text:'Todo começo é difícil, mas você já começou. Isso é o que importa.' },
+    { max:3,    icon:'💪', text:'Você já está criando um hábito. Continue assim!' },
+    { max:7,    icon:'🔥', text:'Constância está te colocando à frente de muitos concurseiros.' },
+    { max:14,   icon:'⚡', text:'Você já está acima da média. Mantenha o ritmo!' },
+    { max:30,   icon:'🏆', text:'Disciplina forte — é exatamente assim que se passa em concurso.' },
+    { max:9999, icon:'🦅', text:'Você é referência de dedicação. O resultado vem pra quem não desiste.' },
+  ];
+  const e = msgs.find(m => days <= m.max) || msgs[msgs.length-1];
+  document.getElementById('motivIcon').textContent = e.icon;
+  document.getElementById('motivDays').textContent = days === 1 ? 'Você está no 1º dia de estudos!' : `Você está estudando há ${days} dia${days>1?'s':''}!`;
+  document.getElementById('motivMsg').textContent = e.text;
+}
+
 // ===== PAINEL =====
 function updatePainelStats() {
-  const loginTime = parseInt(localStorage.getItem('gc_login_time')||Date.now());
-  const days = Math.max(1, Math.floor((Date.now()-loginTime)/(1000*60*60*24))+1);
+  const days = getDaysStudying();
   document.getElementById('statDias').textContent = days;
   document.getElementById('statPomodoros').textContent = localStorage.getItem('gc_pomo_total')||0;
   document.getElementById('statMateriais').textContent = localStorage.getItem('gc_mat_count')||0;
@@ -1073,6 +1195,24 @@ function updateTimerUI() {
   document.getElementById('timerMode').textContent = modes[pomoState.mode];
 }
 
+// ===== SUGESTÕES =====
+function enviarSugestao() {
+  const email = document.getElementById('fbEmail').value.trim();
+  const msg   = document.getElementById('fbMsg').value.trim();
+  if (!msg) {
+    document.getElementById('fbMsg').style.borderColor = 'rgba(239,68,68,0.6)';
+    document.getElementById('fbMsg').focus();
+    setTimeout(() => { document.getElementById('fbMsg').style.borderColor = ''; }, 2000);
+    return;
+  }
+  const body = encodeURIComponent('Email do usuário: ' + (email || 'Não informado') + '\n\nMensagem:\n' + msg + '\n\n---\nEnviado pela plataforma Gavião Concurseiro');
+  window.location.href = 'mailto:vitatilorg@gmail.com?subject=' + encodeURIComponent('Sugestão Plataforma Gavião Concurseiro') + '&body=' + body;
+  document.getElementById('fbConfirm').classList.add('show');
+  document.getElementById('fbEmail').value = '';
+  document.getElementById('fbMsg').value   = '';
+  setTimeout(() => { document.getElementById('fbConfirm').classList.remove('show'); }, 8000);
+}
+
 // ===== LOGOUT =====
 function logout() {
   localStorage.removeItem('gc_logged');
@@ -1087,13 +1227,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
   renderSchedule();
   updateTimerUI();
   updatePainelStats();
-  
+  updateMotivation();
+
   const lastPage = localStorage.getItem('gc_current_page') || 'painel';
   goto(lastPage);
 
-  // Track first visit day
-  if(!localStorage.getItem('gc_login_time')) {
+  if (!localStorage.getItem('gc_login_time')) {
     localStorage.setItem('gc_login_time', Date.now());
+  }
+  if (!localStorage.getItem('gc_start_date')) {
+    localStorage.setItem('gc_start_date', Date.now());
   }
 });
 </script>
