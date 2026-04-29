@@ -476,20 +476,10 @@ body::after{
 .g12{background:linear-gradient(135deg,#3a2a3a,#201820);}
 
 /* ===== MOTIVAÇÃO ===== */
-.motivation-block{
-  background:linear-gradient(135deg,rgba(249,115,22,0.08),rgba(249,115,22,0.03));
-  border:1px solid rgba(249,115,22,0.22);
-  border-radius:14px;padding:16px 20px;margin-bottom:20px;
-  display:flex;align-items:center;gap:14px;
-}
-.motivation-icon{
-  width:48px;height:48px;flex-shrink:0;
-  background:rgba(249,115,22,0.12);border-radius:12px;
-  display:flex;align-items:center;justify-content:center;font-size:1.6rem;
-}
+.motivation-block{background:linear-gradient(135deg,rgba(249,115,22,0.08),rgba(249,115,22,0.03));border:1px solid rgba(249,115,22,0.22);border-radius:14px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+.motivation-icon{width:48px;height:48px;flex-shrink:0;background:rgba(249,115,22,0.12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;}
 .motivation-days{font-size:1rem;font-weight:800;color:#fb923c;margin-bottom:4px;}
 .motivation-msg{font-size:0.78rem;color:var(--muted);line-height:1.45;}
-
 /* ===== SUGESTÕES ===== */
 .feedback-wrap{display:flex;flex-direction:column;gap:18px;max-width:600px;}
 .feedback-intro{font-size:0.82rem;color:var(--muted);line-height:1.6;padding:14px 16px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;}
@@ -502,6 +492,30 @@ body::after{
 .feedback-textarea{min-height:130px;resize:vertical;}
 .feedback-confirm{display:none;align-items:center;gap:10px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.22);border-radius:10px;padding:13px 16px;font-size:0.82rem;color:var(--success);font-weight:600;}
 .feedback-confirm.show{display:flex;}
+.feedback-error{display:none;align-items:center;gap:10px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.22);border-radius:10px;padding:13px 16px;font-size:0.82rem;color:#ef4444;font-weight:600;}
+.feedback-error.show{display:flex;}
+
+/* ===== TAREFAS CRONOGRAMA ===== */
+.tarefas-section{margin-top:28px;}
+.tarefas-titulo{font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue-l);margin-bottom:14px;}
+.tarefa-input-wrap{display:flex;gap:8px;margin-bottom:16px;}
+.tarefa-input{flex:1;padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:'Syne',sans-serif;font-size:0.85rem;outline:none;transition:border-color .2s;}
+.tarefa-input:focus{border-color:rgba(37,99,235,0.45);}
+.tarefa-input::placeholder{color:rgba(148,163,184,0.35);}
+.tarefa-add-btn{padding:10px 18px;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;white-space:nowrap;transition:box-shadow .2s,transform .15s;}
+.tarefa-add-btn:hover{box-shadow:0 4px 16px rgba(37,99,235,0.4);transform:translateY(-1px);}
+.tarefa-add-btn:active{transform:scale(0.97);}
+.tarefas-lista{display:flex;flex-direction:column;gap:8px;}
+.tarefa-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;transition:border-color .2s;}
+.tarefa-item.concluida{opacity:0.5;}
+.tarefa-item.concluida .tarefa-texto{text-decoration:line-through;color:var(--muted);}
+.tarefa-check{width:18px;height:18px;flex-shrink:0;cursor:pointer;accent-color:var(--blue);border-radius:4px;}
+.tarefa-texto{flex:1;font-size:0.85rem;font-weight:600;color:var(--text);}
+.tarefa-del{background:none;border:none;cursor:pointer;color:rgba(148,163,184,0.35);padding:2px 6px;border-radius:6px;font-size:1rem;line-height:1;transition:color .2s,background .2s;}
+.tarefa-del:hover{color:#ef4444;background:rgba(239,68,68,0.08);}
+.tarefas-vazio{font-size:0.8rem;color:var(--muted);text-align:center;padding:20px;border:1px dashed rgba(255,255,255,0.08);border-radius:10px;}
+.tarefas-contador{font-size:0.72rem;color:var(--muted);margin-bottom:10px;}
+.tarefas-contador span{color:var(--success);font-weight:700;}
 </style>
 </head>
 <body>
@@ -552,41 +566,41 @@ body::after{
 
     <nav class="sidebar-nav">
       <div class="nav-section-label">Principal</div>
-      <button class="nav-item" onclick="goto('painel')">
+      <button class="nav-item" data-page="painel" onclick="goto('painel')">
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
         Painel do Estudante
       </button>
-      <button class="nav-item" onclick="goto('materiais')">
+      <button class="nav-item" data-page="materiais" onclick="goto('materiais')">
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
         Materiais de Estudo
       </button>
-      <button class="nav-item" onclick="goto('materialextra')">
+      <button class="nav-item" data-page="materialextra" onclick="goto('materialextra')">
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
         Material Personalizado
       </button>
-      <button class="nav-item" onclick="goto('videoaulas')">
+      <button class="nav-item" data-page="videoaulas" onclick="goto('videoaulas')">
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
         Video Aulas
       </button>
-      <button class="nav-item" onclick="goto('simulados')">
+      <button class="nav-item" data-page="simulados" onclick="goto('simulados')">
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 17h.01"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3"/></svg>
         Sistema Simulados
       </button>
-      <button class="nav-item" onclick="goto('cronograma')">
+      <button class="nav-item" data-page="cronograma" onclick="goto('cronograma')">
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
         Cronograma de Estudos
       </button>
 
       <div class="nav-section-label" style="margin-top:8px;">Ferramentas</div>
-      <button class="nav-item" onclick="goto('pomodoro')">
+      <button class="nav-item" data-page="pomodoro" onclick="goto('pomodoro')">
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         Pomodoro
       </button>
-      <button class="nav-item" onclick="goto('anotacoes')">
+      <button class="nav-item" data-page="anotacoes" onclick="goto('anotacoes')">
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         Anotações
       </button>
-      <button class="nav-item" onclick="goto('sugestoes')">
+      <button class="nav-item" data-page="sugestoes" onclick="goto('sugestoes')">
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         Sugestões
       </button>
@@ -635,7 +649,6 @@ body::after{
           </div>
         </div>
 
-        <!-- MOTIVAÇÃO -->
         <div class="motivation-block">
           <div class="motivation-icon" id="motivIcon">🔥</div>
           <div>
@@ -714,6 +727,16 @@ body::after{
       </div>
       <div class="page-body">
         <div class="schedule-grid" id="scheduleGrid"></div>
+
+        <div class="tarefas-section">
+          <div class="tarefas-titulo">✅ Tarefas do dia</div>
+          <div class="tarefa-input-wrap">
+            <input class="tarefa-input" type="text" id="tarefaInput" placeholder="Adicionar nova tarefa..." onkeydown="if(event.key==='Enter')adicionarTarefa()">
+            <button class="tarefa-add-btn" onclick="adicionarTarefa()">+ Adicionar</button>
+          </div>
+          <div class="tarefas-contador">Concluídas: <span id="tarefasContador">0</span> / <span id="tarefasTotal">0</span></div>
+          <div class="tarefas-lista" id="tarefasLista"></div>
+        </div>
       </div>
     </section>
 
@@ -787,7 +810,7 @@ Bons estudos, Gavião! 🦅"></textarea>
           <div class="continue-label">📁 MATERIAL DISPONÍVEL</div>
           <div class="continue-title">Seu material personalizado está pronto</div>
           <div class="continue-meta">Clique no botão abaixo para acessar o conteúdo exclusivo preparado para você.</div>
-          <a class="continue-btn" href="https://drive.google.com/" target="_blank" rel="noopener">
+          <a class="continue-btn" href="https://drive.google.com/drive/folders/1kUGnIwMVoZ0Ifdx0N45eF1QFcwYXOBjk?usp=sharing" target="_blank" rel="noopener">
             <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             Acessar Material
           </a>
@@ -806,7 +829,11 @@ Bons estudos, Gavião! 🦅"></textarea>
       <div class="page-body">
         <div class="feedback-wrap">
           <div class="feedback-intro">
-            <strong>Como funciona?</strong> Preencha os campos e clique em "Enviar sugestão". Seu aplicativo de e-mail abrirá com a mensagem pronta — só confirmar o envio. Todas as sugestões são lidas com atenção. Obrigado! 🦅
+            <strong>Como funciona?</strong> Preencha os campos e clique em "Enviar sugestão". A mensagem será enviada diretamente, sem abrir nenhum aplicativo. Todas as sugestões são lidas com atenção. Obrigado! 🦅
+          </div>
+          <div class="feedback-field">
+            <div class="feedback-label">Seu nome</div>
+            <input class="feedback-input" type="text" id="fbNome" placeholder="Seu nome">
           </div>
           <div class="feedback-field">
             <div class="feedback-label">Seu e-mail (para resposta)</div>
@@ -817,14 +844,18 @@ Bons estudos, Gavião! 🦅"></textarea>
             <textarea class="feedback-input feedback-textarea" id="fbMsg" placeholder="Escreva aqui sua sugestão, elogio, crítica ou dúvida..."></textarea>
           </div>
           <div>
-            <button class="btn btn-primary" onclick="enviarSugestao()" style="padding:12px 24px;">
+            <button class="btn btn-primary" onclick="enviarSugestao()" style="padding:12px 24px;" id="fbBtn">
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
               Enviar sugestão
             </button>
           </div>
           <div class="feedback-confirm" id="fbConfirm">
             <span style="font-size:1.2rem;">✅</span>
-            Sugestão preparada! Finalize o envio no seu aplicativo de e-mail.
+            Sugestão enviada com sucesso! Obrigado pelo feedback.
+          </div>
+          <div class="feedback-error" id="fbError">
+            <span style="font-size:1.2rem;">❌</span>
+            Erro ao enviar. Tente novamente.
           </div>
         </div>
       </div>
@@ -853,12 +884,12 @@ const MATERIAIS = [
 ];
 
 const VIDEOAULAS = [
-  { title:'Playlists – Direito Constitucional', meta:'Aulas completas em vídeo', badge:'Direito', emoji:'📜', bg:'g4', link:'https://www.dailymotion.com/playlist/x72hso' },
-  { title:'Playlists – Direito Administrativo', meta:'Tópicos essenciais para concursos', badge:'Direito', emoji:'⚖️', bg:'g4', link:'https://www.dailymotion.com/playlist/x72hsp' },
-  { title:'Playlists – Língua Portuguesa', meta:'Gramática, redação e interpretação', badge:'Português', emoji:'📖', bg:'g6', link:'https://www.dailymotion.com/playlist/x72hsr' },
-  { title:'Playlists – Matemática e Raciocínio', meta:'Lógica e matemática aplicada', badge:'Exatas', emoji:'🔢', bg:'g10', link:'https://www.dailymotion.com/playlist/x72hss' },
-  { title:'Playlists – Informática Básica', meta:'Fundamentos de TI para concursos', badge:'TI', emoji:'💻', bg:'g9', link:'https://www.dailymotion.com/playlist/x72hst' },
-  { title:'Playlists – Atualidades e Notícias', meta:'Temas recentes e contemporâneos', badge:'Geral', emoji:'🌎', bg:'g8', link:'https://www.dailymotion.com/playlist/x72hsu' },
+  { title:'Playlists – Direito Constitucional', meta:'Aulas completas em vídeo', badge:'Direito', emoji:'📜', bg:'g4', link:'https://www.dailymotion.com/user/ConcursoPublicoBrasil/playlists' },
+  { title:'Playlists – Direito Administrativo', meta:'Tópicos essenciais para concursos', badge:'Direito', emoji:'⚖️', bg:'g4', link:'https://www.dailymotion.com/user/ConcursoPublicoBrasil/playlists' },
+  { title:'Playlists – Língua Portuguesa', meta:'Gramática, redação e interpretação', badge:'Português', emoji:'📖', bg:'g6', link:'https://www.dailymotion.com/user/ConcursoPublicoBrasil/playlists' },
+  { title:'Playlists – Matemática e Raciocínio', meta:'Lógica e matemática aplicada', badge:'Exatas', emoji:'🔢', bg:'g10', link:'https://www.dailymotion.com/user/ConcursoPublicoBrasil/playlists' },
+  { title:'Playlists – Informática Básica', meta:'Fundamentos de TI para concursos', badge:'TI', emoji:'💻', bg:'g9', link:'https://www.dailymotion.com/user/ConcursoPublicoBrasil/playlists' },
+  { title:'Playlists – Atualidades e Notícias', meta:'Temas recentes e contemporâneos', badge:'Geral', emoji:'🌎', bg:'g8', link:'https://www.dailymotion.com/user/ConcursoPublicoBrasil/playlists' },
 ];
 
 const SIMULADOS = [
@@ -913,21 +944,10 @@ const DEFAULT_SCHEDULE = [
 function goto(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => {
-    if(n.textContent.trim().toLowerCase().includes(page.substring(0,5).toLowerCase()) || 
-       (page==='materiais' && n.textContent.includes('Materiais')) ||
-       (page==='painel' && n.textContent.includes('Painel')) ||
-       (page==='videoaulas' && n.textContent.includes('Video')) ||
-       (page==='simulados' && n.textContent.includes('Simulados')) ||
-       (page==='cronograma' && n.textContent.includes('Cronograma')) ||
-       (page==='pomodoro' && n.textContent.includes('Pomodoro')) ||
-       (page==='anotacoes' && n.textContent.includes('Anotações')) ||
-       (page==='sugestoes' && n.textContent.includes('Sugestões')) ||
-       (page==='materialextra' && n.textContent.includes('Material Personalizado'))) {
-      n.classList.add('active');
-    }
-  });
+  const target = document.getElementById('page-'+page);
+  if(target) target.classList.add('active');
+  const activeBtn = document.querySelector('.nav-item[data-page="'+page+'"]');
+  if(activeBtn) activeBtn.classList.add('active');
   closeSidebar();
   localStorage.setItem('gc_current_page', page);
   updatePainelStats();
@@ -1195,8 +1215,57 @@ function updateTimerUI() {
   document.getElementById('timerMode').textContent = modes[pomoState.mode];
 }
 
+// ===== TAREFAS =====
+function carregarTarefas() {
+  const tarefas = JSON.parse(localStorage.getItem('gc_tarefas') || '[]');
+  const lista = document.getElementById('tarefasLista');
+  if (!lista) return;
+  if (tarefas.length === 0) {
+    lista.innerHTML = '<div class="tarefas-vazio">Nenhuma tarefa ainda. Adicione a primeira! 🦅</div>';
+    document.getElementById('tarefasContador').textContent = '0';
+    document.getElementById('tarefasTotal').textContent = '0';
+    return;
+  }
+  const concluidas = tarefas.filter(t => t.done).length;
+  document.getElementById('tarefasContador').textContent = concluidas;
+  document.getElementById('tarefasTotal').textContent = tarefas.length;
+  lista.innerHTML = tarefas.map((t, i) => `
+    <div class="tarefa-item ${t.done ? 'concluida' : ''}" id="tarefa-${i}">
+      <input class="tarefa-check" type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTarefa(${i})">
+      <span class="tarefa-texto">${t.texto}</span>
+      <button class="tarefa-del" onclick="deletarTarefa(${i})" title="Remover">✕</button>
+    </div>
+  `).join('');
+}
+
+function adicionarTarefa() {
+  const input = document.getElementById('tarefaInput');
+  const texto = input.value.trim();
+  if (!texto) { input.focus(); return; }
+  const tarefas = JSON.parse(localStorage.getItem('gc_tarefas') || '[]');
+  tarefas.push({ texto: texto, done: false });
+  localStorage.setItem('gc_tarefas', JSON.stringify(tarefas));
+  input.value = '';
+  carregarTarefas();
+}
+
+function toggleTarefa(i) {
+  const tarefas = JSON.parse(localStorage.getItem('gc_tarefas') || '[]');
+  tarefas[i].done = !tarefas[i].done;
+  localStorage.setItem('gc_tarefas', JSON.stringify(tarefas));
+  carregarTarefas();
+}
+
+function deletarTarefa(i) {
+  const tarefas = JSON.parse(localStorage.getItem('gc_tarefas') || '[]');
+  tarefas.splice(i, 1);
+  localStorage.setItem('gc_tarefas', JSON.stringify(tarefas));
+  carregarTarefas();
+}
+
 // ===== SUGESTÕES =====
 function enviarSugestao() {
+  const nome  = document.getElementById('fbNome').value.trim();
   const email = document.getElementById('fbEmail').value.trim();
   const msg   = document.getElementById('fbMsg').value.trim();
   if (!msg) {
@@ -1205,12 +1274,41 @@ function enviarSugestao() {
     setTimeout(() => { document.getElementById('fbMsg').style.borderColor = ''; }, 2000);
     return;
   }
-  const body = encodeURIComponent('Email do usuário: ' + (email || 'Não informado') + '\n\nMensagem:\n' + msg + '\n\n---\nEnviado pela plataforma Gavião Concurseiro');
-  window.location.href = 'mailto:vitatilorg@gmail.com?subject=' + encodeURIComponent('Sugestão Plataforma Gavião Concurseiro') + '&body=' + body;
-  document.getElementById('fbConfirm').classList.add('show');
-  document.getElementById('fbEmail').value = '';
-  document.getElementById('fbMsg').value   = '';
-  setTimeout(() => { document.getElementById('fbConfirm').classList.remove('show'); }, 8000);
+  const btn = document.getElementById('fbBtn');
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  const formData = new FormData();
+  formData.append('name', nome || 'Não informado');
+  formData.append('email', email || 'Não informado');
+  formData.append('message', msg);
+  formData.append('_subject', 'Sugestão Plataforma Gavião Concurseiro');
+  fetch('https://formsubmit.co/ajax/vitatilorg@gmail.com', {
+    method: 'POST',
+    headers: { 'Accept': 'application/json' },
+    body: formData
+  })
+  .then(r => r.json())
+  .then(data => {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    if(data.success === 'true' || data.success === true) {
+      document.getElementById('fbConfirm').classList.add('show');
+      document.getElementById('fbError').classList.remove('show');
+      document.getElementById('fbNome').value  = '';
+      document.getElementById('fbEmail').value = '';
+      document.getElementById('fbMsg').value   = '';
+      setTimeout(() => { document.getElementById('fbConfirm').classList.remove('show'); }, 8000);
+    } else {
+      document.getElementById('fbError').classList.add('show');
+      setTimeout(() => { document.getElementById('fbError').classList.remove('show'); }, 5000);
+    }
+  })
+  .catch(() => {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    document.getElementById('fbError').classList.add('show');
+    setTimeout(() => { document.getElementById('fbError').classList.remove('show'); }, 5000);
+  });
 }
 
 // ===== LOGOUT =====
@@ -1228,6 +1326,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   updateTimerUI();
   updatePainelStats();
   updateMotivation();
+  carregarTarefas();
 
   const lastPage = localStorage.getItem('gc_current_page') || 'painel';
   goto(lastPage);
